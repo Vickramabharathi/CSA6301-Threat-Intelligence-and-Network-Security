@@ -1,0 +1,27 @@
+import hashlib
+
+def file_hash(filename, algo="sha256"):
+    h = hashlib.new(algo)
+    with open(filename, "rb") as f:
+        h.update(f.read())
+    return h.hexdigest()
+
+# Create a sample file
+with open("sample.txt", "w") as f:
+    f.write("Confidential report v1")
+
+# Calculate original hash
+print("Original hash :", file_hash("sample.txt"))
+
+# Modify the file
+with open("sample.txt", "a") as f:
+    f.write(" - tampered!")
+
+# Calculate modified hash
+print("Modified hash :", file_hash("sample.txt"))
+
+# Compare hashes
+if file_hash("sample.txt") == file_hash("sample.txt"):
+    print("Integrity check: PASSED")
+else:
+    print("Integrity check: FAILED (hash changed) -> file was modified")
